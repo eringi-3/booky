@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Typeahead.jsの初期化スクリプト -->
+    <script src="{{ asset('js/typeahead-init.js') }}"></script>
 </head>
 <body>
     <div id="app">

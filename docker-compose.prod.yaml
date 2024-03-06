@@ -1,0 +1,52 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-Apache-Prod
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - app_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-Prod
+    container_name: laravel-app-container
+    depends_on:
+      - mysql
+    environment:
+      - APP_ENV=production
+    networks:
+      - app_network
+
+  composer:
+    image: composer
+    volumes:
+      - .:/app
+    entrypoint: ["sh", "-c", "tail -f /dev/null"]
+    networks:
+      - app_network
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-container
+    env_file:
+      - .env.mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app_network
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
